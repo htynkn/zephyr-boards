@@ -1,0 +1,5 @@
+if SOC_SERIES_GD32E23X
+
+rsource "Kconfig.defconfig.gd32*"
+
+endif # SOC_SERIES_GD32E23X
