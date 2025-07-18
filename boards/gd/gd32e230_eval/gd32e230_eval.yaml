@@ -1,0 +1,9 @@
+identifier: gd32e230_eval
+name: GD32E230-EVAL
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+supported:
+  - jlink

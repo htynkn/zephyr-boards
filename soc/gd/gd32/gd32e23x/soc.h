@@ -1,0 +1,10 @@
+#ifndef _SOC_ARM_GIGADEVICE_GD32E23X_SOC_H_
+#define _SOC_ARM_GIGADEVICE_GD32E23X_SOC_H_
+
+#ifndef _ASMLANGUAGE
+
+#include <gd32e23x.h>
+
+#endif /* _ASMLANGUAGE */
+
+#endif /* _SOC_ARM_GIGADEVICE_GD32E23X_SOC_H_ */
