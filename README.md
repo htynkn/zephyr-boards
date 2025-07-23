@@ -33,6 +33,18 @@ west build -b $BOARD app
 
 where `$BOARD` is the target board.
 
+
+
+### GD32E230 Board Support
+
+Support for the GD32E230 board has been added to this repository. You can now use the `gd32e230` board by specifying it in the build command:
+
+```shell
+west build -b gd32e230 app
+```
+
+For testing with the GD32E230 board, ensure you have the appropriate hardware and follow the general testing instructions provided earlier.
+
 You can use the `custom_plank` board found in this
 repository. Note that Zephyr sample boards may be used if an
 appropriate overlay is provided (see `app/boards`).
