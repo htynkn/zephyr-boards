@@ -63,10 +63,6 @@ where `$BOARD` is the target board.
     63     ```
     64
 
-You can use the `custom_plank` board found in this
-repository. Note that Zephyr sample boards may be used if an
-appropriate overlay is provided (see `app/boards`).
-
 A sample debug configuration is also provided. To apply it, run the following
 command:
 
