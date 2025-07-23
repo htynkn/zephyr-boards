@@ -277,7 +277,7 @@ void timer_prescaler_config(uint32_t timer_periph, uint16_t prescaler, uint8_t p
 
 /*!
     \brief      configure TIMER repetition register value
-    \param[in]  timer_periph: TIMERx(x=0,15,16)
+    \param[in]  timer_periph: TIMERx(x=0,14..16)
     \param[in]  repetition: the counter repetition value,0~255
     \param[out] none
     \retval     none
@@ -1237,7 +1237,7 @@ void timer_channel_output_polarity_config(uint32_t timer_periph, uint16_t channe
       \arg        TIMER_CH_0: TIMER channel0(TIMERx(x=0,2,13..16))
       \arg        TIMER_CH_1: TIMER channel1(TIMERx(x=0,2,14))
       \arg        TIMER_CH_2: TIMER channel2(TIMERx(x=0,2))
-      \arg        TIMER_CH_3: TIMER channel2(TIMERx(x=0,2))
+      \arg        TIMER_CH_3: TIMER channel3(TIMERx(x=0,2))
     \param[in]  ocnpolarity: channel complementary output polarity
                 only one parameter can be selected which is shown as below:
       \arg        TIMER_OCN_POLARITY_HIGH: channel complementary output polarity is high
