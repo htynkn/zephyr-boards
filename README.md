@@ -1,52 +1,14 @@
-# Zephyr Example Application
+# Zephyr Boards
 
-<a href="https://github.com/zephyrproject-rtos/example-application/actions/workflows/build.yml?query=branch%3Amain">
-  <img src="https://github.com/zephyrproject-rtos/example-application/actions/workflows/build.yml/badge.svg?event=push">
-</a>
-<a href="https://github.com/zephyrproject-rtos/example-application/actions/workflows/docs.yml?query=branch%3Amain">
-  <img src="https://github.com/zephyrproject-rtos/example-application/actions/workflows/docs.yml/badge.svg?event=push">
-</a>
-<a href="https://zephyrproject-rtos.github.io/example-application">
-  <img alt="Documentation" src="https://img.shields.io/badge/documentation-3D578C?logo=sphinx&logoColor=white">
-</a>
-<a href="https://zephyrproject-rtos.github.io/example-application/doxygen">
-  <img alt="API Documentation" src="https://img.shields.io/badge/API-documentation-3D578C?logo=c&logoColor=white">
-</a>
+This repository provides minimal support for GD32E230 microcontroller and development boards for the Zephyr RTOS.
 
-This repository contains a Zephyr example application. The main purpose of this
-repository is to serve as a reference on how to structure Zephyr-based
-applications. Some of the features demonstrated in this example are:
+## Supported Hardware
 
-- Basic [Zephyr application][app_dev] skeleton
-- [Zephyr workspace applications][workspace_app]
-- [Zephyr modules][modules]
-- [West T2 topology][west_t2]
-- [Custom boards][board_porting]
-- Custom [devicetree bindings][bindings]
-- Out-of-tree [drivers][drivers]
-- Out-of-tree libraries
-- Example CI configuration (using GitHub Actions)
-- Custom [west extension][west_ext]
-- Custom [Zephyr runner][runner_ext]
-- Doxygen and Sphinx documentation boilerplate
+### Boards
+- **GD32E230-EVAL**: GigaDevice GD32E230 evaluation board
 
-This repository is versioned together with the [Zephyr main tree][zephyr]. This
-means that every time that Zephyr is tagged, this repository is tagged as well
-with the same version number, and the [manifest](west.yml) entry for `zephyr`
-will point to the corresponding Zephyr tag. For example, the `example-application`
-v2.6.0 will point to Zephyr v2.6.0. Note that the `main` branch always
-points to the development branch of Zephyr, also `main`.
-
-[app_dev]: https://docs.zephyrproject.org/latest/develop/application/index.html
-[workspace_app]: https://docs.zephyrproject.org/latest/develop/application/index.html#zephyr-workspace-app
-[modules]: https://docs.zephyrproject.org/latest/develop/modules.html
-[west_t2]: https://docs.zephyrproject.org/latest/develop/west/workspaces.html#west-t2
-[board_porting]: https://docs.zephyrproject.org/latest/guides/porting/board_porting.html
-[bindings]: https://docs.zephyrproject.org/latest/guides/dts/bindings.html
-[drivers]: https://docs.zephyrproject.org/latest/reference/drivers/index.html
-[zephyr]: https://github.com/zephyrproject-rtos/zephyr
-[west_ext]: https://docs.zephyrproject.org/latest/develop/west/extensions.html
-[runner_ext]: https://docs.zephyrproject.org/latest/develop/modules.html#external-runners
+### SoCs
+- **GD32E23x**: GigaDevice GD32E230 series ARM Cortex-M23 microcontrollers
 
 ## Getting Started
 
@@ -57,37 +19,32 @@ environment. Follow the official
 ### Initialization
 
 The first step is to initialize the workspace folder (``my-workspace``) where
-the ``example-application`` and all Zephyr modules will be cloned. Run the following
+the ``zephyr-boards`` and all Zephyr modules will be cloned. Run the following
 command:
 
 ```shell
-# initialize my-workspace for the example-application (main branch)
-west init -m https://github.com/zephyrproject-rtos/example-application --mr main my-workspace
+# initialize my-workspace for the GD32E230 support branch
+west init -m https://github.com/htynkn/zephyr-boards.git --mr main my-workspace
 # update Zephyr modules
 cd my-workspace
 west update
+west packages pip --install
+west sdk install -t arm-zephyr-eabi
 ```
 
-### Building and running
+### Building and Running
 
-To build the application, run the following command:
+To build the sample application, run the following command:
 
 ```shell
-cd example-application
-west build -b $BOARD app
+cd zephyr-boards
+west build -b gd32e230_eval samples/app
 ```
 
-where `$BOARD` is the target board.
-
-You can use the `custom_plank` board found in this
-repository. Note that Zephyr sample boards may be used if an
-appropriate overlay is provided (see `app/boards`).
-
-A sample debug configuration is also provided. To apply it, run the following
-command:
+For other Zephyr sample applications, you can use:
 
 ```shell
-west build -b $BOARD app -- -DEXTRA_CONF_FILE=debug.conf
+west build -b gd32e230_eval samples/basic/blinky
 ```
 
 Once you have built the application, run the following command to flash it:
@@ -96,43 +53,28 @@ Once you have built the application, run the following command to flash it:
 west flash
 ```
 
-### Testing
+### Hardware Abstraction Layer (HAL)
 
-To execute Twister integration tests, run the following command:
+This repository includes the GD32E23x Firmware Library in the `hal/gd/GD32E23x_Firmware_Library/` directory, providing:
 
-```shell
-west twister -T tests --integration
+- CMSIS headers and startup files
+- Standard peripheral drivers for all GD32E23x peripherals
+- Template projects for Keil and IAR development environments
+
+## Project Structure
+
+```
+├── boards/gd/gd32e230_eval/     # Board definition files
+├── soc/gd/gd32/gd32e23x/        # SoC definition and configuration
+├── hal/gd/GD32E23x_Firmware_Library/  # GD32E23x HAL library
+├── samples/app/                 # Simple sample application
+└── west.yml                     # West manifest (Zephyr v4.2.0)
 ```
 
-### Documentation
+## Features
 
-A minimal documentation setup is provided for Doxygen and Sphinx. To build the
-documentation first change to the ``doc`` folder:
-
-```shell
-cd doc
-```
-
-Before continuing, check if you have Doxygen installed. It is recommended to
-use the same Doxygen version used in [CI](.github/workflows/docs.yml). To
-install Sphinx, make sure you have a Python installation in place and run:
-
-```shell
-pip install -r requirements.txt
-```
-
-API documentation (Doxygen) can be built using the following command:
-
-```shell
-doxygen
-```
-
-The output will be stored in the ``_build_doxygen`` folder. Similarly, the
-Sphinx documentation (HTML) can be built using the following command:
-
-```shell
-make html
-```
-
-The output will be stored in the ``_build_sphinx`` folder. You may check for
-other output formats other than HTML by running ``make help``.
+- Minimal GD32E230 SoC support for Zephyr RTOS
+- Board configuration for GD32E230-EVAL development board
+- Integration with Zephyr v4.2.0
+- J-Link debugging support
+- ARM Cortex-M23 architecture support
