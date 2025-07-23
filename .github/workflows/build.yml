@@ -11,13 +11,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, macos-13, macos-14, windows-2022]
+        os: [ubuntu-22.04]
+        board: [gd32e230_eval]
+        sample: [app]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: example-application
+          path: zephyr-boards
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,23 +29,11 @@ jobs:
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: example-application
+          app-path: zephyr-boards
           toolchains: arm-zephyr-eabi
 
       - name: Build firmware
-        working-directory: example-application
+        working-directory: zephyr-boards
         shell: bash
         run: |
-          if [ "${{ runner.os }}" = "Windows" ]; then
-            EXTRA_TWISTER_FLAGS="--short-build-path -O/tmp/twister-out"
-          fi
-          west twister -T app -v --inline-logs --integration $EXTRA_TWISTER_FLAGS
-
-      - name: Twister Tests
-        working-directory: example-application
-        shell: bash
-        run: |
-          if [ "${{ runner.os }}" = "Windows" ]; then
-            EXTRA_TWISTER_FLAGS="--short-build-path -O/tmp/twister-out"
-          fi
-          west twister -T tests -v --inline-logs --integration $EXTRA_TWISTER_FLAGS
+          west build -b ${{ matrix.board }} samples/${{ matrix.sample }}

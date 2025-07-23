@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_SERIES_GD32E23X
+	bool "GD32E23x Series"
+	select ARM
+	select CPU_CORTEX_M23
+	select SOC_FAMILY_GD32
+	select SOC_EARLY_INIT_HOOK
+	select CPU_CORTEX_M_HAS_VTOR
+	select CPU_CORTEX_M_HAS_SYSTICK
+	
+	help
+	  Enable support for GigaDevice GD32E23x series
+
+config SOC_SERIES
+	default "gd32e23x" if SOC_SERIES_GD32E23X
+
+config SOC_GD32E230
+    bool "GD32E230"
+
+config SOC
+    default "gd32e230" if SOC_GD32E230

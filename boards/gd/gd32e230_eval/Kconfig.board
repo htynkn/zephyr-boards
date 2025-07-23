@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_GD32E230_EVAL
+	bool "GD32E230 EVAL Board"
+	depends on SOC_SERIES_GD32E23X

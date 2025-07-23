@@ -1,0 +1,6 @@
+family:
+- name: gd_gd32
+  series:
+  - name: gd32e23x
+    socs:
+    - name: gd32e230
