@@ -840,3 +840,4 @@ void adc_oversample_mode_disable(void)
 {
     ADC_OVSAMPCTL &= ~((uint32_t)ADC_OVSAMPCTL_OVSEN);
 }
+

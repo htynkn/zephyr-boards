@@ -186,7 +186,7 @@ void usart_disable(uint32_t usart_periph)
     \param[in]  txconfig: enable or disable USART transmitter
                 only one parameter can be selected which is shown as below:
       \arg        USART_TRANSMIT_ENABLE: enable USART transmission
-      \arg        USART_TRANSMIT_DISABLE: enable USART transmission
+      \arg        USART_TRANSMIT_DISABLE: disable USART transmission
     \param[out] none
     \retval     none
 */

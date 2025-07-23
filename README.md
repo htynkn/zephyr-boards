@@ -28,7 +28,7 @@ To build the application, run the following command:
 
 ```shell
 cd zephyr-boards
-west build -b $BOARD app
+west build -b $BOARD samples/hello_world
 ```
 
 where `$BOARD` is the target board.
