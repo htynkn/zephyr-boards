@@ -33,13 +33,11 @@ west build -b $BOARD app
 
 where `$BOARD` is the target board.
 
-
-     ## Support for gd32e230 Board
+## Support for gd32e230 Board
     
-    This repository now supports the gd32e230 board. To build and run a sample
-    application for this board, follow these steps:
+This repository now supports the gd32e230 board. To build and run a sample application for this board, follow these steps:
     
-     ### Building and Running for gd32e230
+### Building and Running for gd32e230
     
     1. Build the application for the gd32e230 board:
     
