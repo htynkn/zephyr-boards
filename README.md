@@ -39,26 +39,26 @@ This repository now supports the gd32e230 board. To build and run a sample appli
     
 ### Building and Running for gd32e230
     
-    1. Build the application for the gd32e230 board:
+1. Build the application for the gd32e230 board:
     
-         ```shell
+```shell
          cd zephyr-boards
          west build -b gd32e230 samples/app
-        ```
+```
     
-     2. Flash the application to the gd32e230 board:
-    
-         ```shell
+2. Flash the application to the gd32e230 board:
+
+```shell
          west flash
-         ```
+```
     
-    3. Alternatively, you can run a sample application from the Zephyr samples:
+3. Alternatively, you can run a sample application from the Zephyr samples:
     
-         ```shell
+```shell
         cd zephyr-boards
          west build -b gd32e230 zephyr/samples/hello_world
          west flash
-         ```
+```
     
 
 A sample debug configuration is also provided. To apply it, run the following
@@ -75,3 +75,6 @@ west flash
 ```
 
 
+# References
+
++ https://github.com/zephyrproject-rtos/hal_gigadevice

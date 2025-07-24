@@ -1,0 +1,143 @@
+/*
+* SPDX-License-Identifier: Apache-2.0
+*/
+
+/dts-v1/;
+
+#include <common/mem.h>
+#include <arm/armv8-m.dtsi>
+
+/ {
+	soc {
+		flash0: flash@8000000 {
+			compatible = "soc-nv-flash";
+			label = "FLASH_0";
+			reg = <0x08000000 DT_SIZE_K(64)>;
+			write-block-size = <4>;
+			erase-block-size = <1024>;
+		}   ;
+		
+		sram0: sram@20000000 {
+			compatible = "mmio-sram";
+			label = "SRAM_0";
+			reg = <0x20000000 DT_SIZE_K(8)>;
+		};
+		
+		rcu: reset-clock-controller@40021000 {
+			compatible = "gd,gd32-rcu";
+			reg = <0x40021000 0x400>;
+			status = "okay";
+			
+			cctl: clock-controller {
+				compatible = "gd,gd32-cctl";
+				#clock-cells = <1>;
+				status = "okay";
+			};
+			
+			rctl: reset-controller {
+				compatible = "gd,gd32-rctl";
+				#reset-cells = <1>;
+				status = "okay";
+			};
+		};
+		
+		pinctrl: pin-controller@48000000 {
+			compatible = "gd,gd32-pinctrl-af";
+			reg = <0x48000000 0x1800>; /* 调整大小以包含GPIOF */
+			#address-cells = <1>;
+			#size-cells = <1>;
+			status = "okay";
+			
+			gpioa: gpio@48000000 {
+				compatible = "gd,gd32-gpio";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x48000000 0x400>;
+				clocks = <&cctl 1572866>; /* GD32_CLOCK_GPIOA -> RCU_APB2EN[2] */
+				resets = <&rctl 786434>;  /* GD32_RESET_GPIOA -> RCU_APB2RST[2] */
+				status = "disabled";
+			};
+			
+			gpiob: gpio@48000400 {
+				compatible = "gd,gd32-gpio";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x48000400 0x400>;
+				clocks = <&cctl 1572867>; /* GD32_CLOCK_GPIOB -> RCU_APB2EN[3] */
+				resets = <&rctl 786435>;  /* GD32_RESET_GPIOB -> RCU_APB2RST[3] */
+				status = "disabled";
+			};
+			
+			gpioc: gpio@48000800 {
+				compatible = "gd,gd32-gpio";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x48000800 0x400>;
+				clocks = <&cctl 1572868>; /* GD32_CLOCK_GPIOC -> RCU_APB2EN[4] */
+				resets = <&rctl 786436>;  /* GD32_RESET_GPIOC -> RCU_APB2RST[4] */
+				status = "disabled";
+			};
+			
+			gpiof: gpio@48001400 {
+				compatible = "gd,gd32-gpio";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x48001400 0x400>;
+				clocks = <&cctl 1572871>; /* GD32_CLOCK_GPIOF -> RCU_APB2EN[7] */
+				resets = <&rctl 786439>;  /* GD32_RESET_GPIOF -> RCU_APB2RST[7] */
+				status = "disabled";
+			};
+		};
+		
+		usart0: usart@40013800 {
+			compatible = "gd,gd32-usart";
+			reg = <0x40013800 0x400>;
+			interrupts = <27 0>;
+			clocks = <&cctl 1572878>; /* GD32_CLOCK_USART0 -> RCU_APB2EN[14] */
+			resets = <&rctl 786446>;  /* GD32_RESET_USART0 -> RCU_APB2RST[14] */
+			status = "disabled";
+		};
+		
+		usart1: usart@40004400 {
+			compatible = "gd,gd32-usart";
+			reg = <0x40004400 0x400>;
+			interrupts = <28 0>;
+			clocks = <&cctl 1835025>; /* GD32_CLOCK_USART1 -> RCU_APB1EN[17] */
+			resets = <&rctl 1048593>;  /* GD32_RESET_USART1 -> RCU_APB1RST[17] */
+			status = "disabled";
+		};
+
+        exti: interrupt-controller@40010400 {
+			compatible = "gd,gd32-exti";
+			reg = <0x40010400 0x400>;
+            num-lines = <30>;
+
+			interrupt-controller;
+			#interrupt-cells = <1>;
+			clocks = <&cctl 1572864>; /* GD32_CLOCK_SYSCFG, 必须! */
+
+			interrupts = <5 0>,   /* EXTI0_1_IRQn */
+				     <6 0>,   /* EXTI2_3_IRQn */
+				     <7 0>;   /* EXTI4_15_IRQn */
+			
+			interrupt-names = "line0", "line1", "line2";
+			status = "okay";
+		};
+	};
+	
+	
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		
+		cpu@0 {
+			compatible = "arm,cortex-m23";
+			reg = <0>;
+			clock-frequency = <72000000>;
+		};
+	};
+};
+
+&nvic {
+	arm,num-irq-priority-bits = <2>;
+};

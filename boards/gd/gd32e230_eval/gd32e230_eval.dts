@@ -1,46 +1,69 @@
 /*
- * SPDX-License-Identifier: Apache-2.0
- */
+* SPDX-License-Identifier: Apache-2.0
+*/
 
 /dts-v1/;
 
 #include <common/mem.h>
+#include <gd/gd32e23x/gd32e230.dtsi>
 #include <arm/armv8-m.dtsi>
 
 / {
-	compatible = "simple-bus";
-
+	
 	chosen {
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
+		zephyr,console = &usart0;
 	};
 
-	flash0: flash@8000000 {
-		compatible = "soc-nv-flash";
-		label = "FLASH_0";
-		reg = <0x08000000 DT_SIZE_K(64)>;
-		write-block-size = <4>;
-		erase-block-size = <1024>;
+	aliases {
+		led0 = &blue_led;
+		serial0 = &usart0;
+		serial1 = &usart1;
 	};
 
-	sram0: sram@20000000 {
-		compatible = "mmio-sram";
-		label = "SRAM_0";
-		reg = <0x20000000 DT_SIZE_K(8)>;
-	};
-
-	cpus {
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		cpu@0 {
-			compatible = "arm,cortex-m23";
-			reg = <0>;
-			clock-frequency = <72000000>;
+	leds {
+		compatible = "gpio-leds";
+		blue_led: led_0 {
+			gpios = <&gpioc 13 1>; /* GPIOC 13, Active Low */
+			label = "User LED";
 		};
 	};
 };
 
-&nvic {
-	arm,num-irq-priority-bits = <2>;
+&gpioa {
+	status = "okay";
+};
+
+&gpioc {
+	status = "okay";
+};
+
+/* Define board-specific pinmux */
+&pinctrl {
+	usart0_pins: usart0-pins {
+		pinmux = <513>,   /* PA2, AF1 -> USART0_TX */
+			 <769>;   /* PA3, AF1 -> USART0_RX */
+	};
+
+	usart1_pins: usart1-pins {
+		pinmux = <2052>,  /* PA8, AF4 -> USART1_TX */
+			 <3841>;  /* PA15, AF1 -> USART1_RX */
+	};
+};
+
+/* Enable and configure USART0 for console */
+&usart0 {
+	pinctrl-0 = <&usart0_pins>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
+};
+
+/* Enable and configure USART1 */
+&usart1 {
+	pinctrl-0 = <&usart1_pins>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
 };
