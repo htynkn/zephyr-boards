@@ -33,35 +33,35 @@ west build -b $BOARD app
 
 where `$BOARD` is the target board.
 
-    36
-    37 ## Support for gd32e230 Board
-    38
-    39 This repository now supports the gd32e230 board. To build and run a sample
-    40 application for this board, follow these steps:
-    41
-    42 ### Building and Running for gd32e230
-    43
-    44 1. Build the application for the gd32e230 board:
-    45
-    46     ```shell
-    47     cd zephyr-boards
-    48     west build -b gd32e230 app
-    49     ```
-    50
-    51 2. Flash the application to the gd32e230 board:
-    52
-    53     ```shell
-    54     west flash
-    55     ```
-    56
-    57 3. Alternatively, you can run a sample application from the Zephyr samples:
-    58
-    59     ```shell
-    60     cd zephyr-boards
-    61     west build -b gd32e230 zephyr/samples/hello_world
-    62     west flash
-    63     ```
-    64
+
+     ## Support for gd32e230 Board
+    
+    This repository now supports the gd32e230 board. To build and run a sample
+    application for this board, follow these steps:
+    
+     ### Building and Running for gd32e230
+    
+    1. Build the application for the gd32e230 board:
+    
+         ```shell
+         cd zephyr-boards
+         west build -b gd32e230 samples/app
+        ```
+    
+     2. Flash the application to the gd32e230 board:
+    
+         ```shell
+         west flash
+         ```
+    
+    3. Alternatively, you can run a sample application from the Zephyr samples:
+    
+         ```shell
+        cd zephyr-boards
+         west build -b gd32e230 zephyr/samples/hello_world
+         west flash
+         ```
+    
 
 A sample debug configuration is also provided. To apply it, run the following
 command:
