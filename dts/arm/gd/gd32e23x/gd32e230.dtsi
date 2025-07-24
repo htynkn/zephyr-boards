@@ -106,22 +106,28 @@
 			resets = <&rctl 1048593>;  /* GD32_RESET_USART1 -> RCU_APB1RST[17] */
 			status = "disabled";
 		};
-
-        exti: interrupt-controller@40010400 {
+		
+		exti: interrupt-controller@40010400 {
 			compatible = "gd,gd32-exti";
 			reg = <0x40010400 0x400>;
-            num-lines = <30>;
-
+			num-lines = <30>;
+			
 			interrupt-controller;
 			#interrupt-cells = <1>;
 			clocks = <&cctl 1572864>; /* GD32_CLOCK_SYSCFG, 必须! */
-
+			
 			interrupts = <5 0>,   /* EXTI0_1_IRQn */
-				     <6 0>,   /* EXTI2_3_IRQn */
-				     <7 0>;   /* EXTI4_15_IRQn */
+			<6 0>,   /* EXTI2_3_IRQn */
+			<7 0>;   /* EXTI4_15_IRQn */
 			
 			interrupt-names = "line0", "line1", "line2";
 			status = "okay";
+		};
+		
+		syscfg: syscfg@40010000 {
+			compatible = "gd,gd32-syscfg";
+			reg = <0x40010000 0x400>;
+			clocks = <&cctl 0>;
 		};
 	};
 	

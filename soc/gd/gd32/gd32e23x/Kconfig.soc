@@ -1,5 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 
+config HAS_GD32_HAL
+    bool
+	default y
+	
+config GD32_HAS_AF_PINMUX
+	bool
+	default y
+
 config SOC_SERIES_GD32E23X
 	bool "GD32E23x Series"
 	select ARM
@@ -9,6 +17,7 @@ config SOC_SERIES_GD32E23X
 	select SOC_EARLY_INIT_HOOK
 	select SOC_FAMILY_GD_GD32
 	select BUILD_OUTPUT_HEX
+	select GD32_HAS_AF_PINMUX
 	
 	help
 	  Enable support for GigaDevice GD32E23x series
@@ -23,3 +32,4 @@ config SOC
     default "gd32e230" if SOC_GD32E230
 
 default GD32_HXTAL_8MHZ if SOC_SERIES_GD32E23X
+
